@@ -1,0 +1,22 @@
+cookie:
+  expiry_minutes: 10
+  key: rahul
+  name: Kuber_Inventory
+credentials:
+  usernames:
+    rahul_kuber:
+      email: rahul@gmail.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Rahul Jain
+      password: rah123
+    riya_kuber:
+      email: riyadubey.seya25@gmail.com
+      failed_login_attempts: 0
+      logged_in: true
+      name: Riya Dubey
+      password: riya1234
+
+pre-authorized:
+  emails:
+  - riyadubey.seya25@gmail.com
