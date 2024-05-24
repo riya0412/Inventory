@@ -8,6 +8,7 @@ import pickle
 from order_data import *
 from Machinery import *
 from Inventory import *
+from Calculators import *
 from pathlib import Path
 import streamlit_authenticator as stauth
 from streamlit_extras.metric_cards import style_metric_cards
@@ -58,13 +59,13 @@ elif st.session_state["authentication_status"]:
     # result = view_all_data()
     # df=pd.DataFrame(result,columns=["Policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","id"])
 
-    # conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
-    # c=conn.cursor()
-    # query="select * from client_list"
-    # c.execute(query)
-    # data=c.fetchall()
+    conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+    c=conn.cursor()
+    query="select * from client_list"
+    c.execute(query)
+    data=c.fetchall()
 
-    # df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","TimeGuaranteeforCredit","LastCreditCycle","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","ManufacturedRates","POCName","POCContactInfo","LastTradedValuesWithProducts","LastMeeting","AddressWork"])
+    df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","TimeGuaranteeforCredit","LastCreditCycle","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","ManufacturedRates","POCName","POCContactInfo","LastTradedValuesWithProducts","LastMeeting","AddressWork"])
     
     #load excel file | comment this line when  you fetch data from mysql
     # Inventry=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Inventory')
@@ -168,38 +169,31 @@ elif st.session_state["authentication_status"]:
     def Calculator():
         st.title("CALCULATOR")
         # Get user input for diameter in inches
-        Cost=st.number_input("Enter cost of Conductor")
-        Al_diameter_inches = st.number_input("Enter Aluminium Diameter (inches)", min_value=0.0, step=0.1)
-        Steel_diameter_inches = st.number_input("Enter Steel Diameter (inches)", min_value=0.0, step=0.1)
-        # Calculate other values
-        Al_diameter_mm = Al_diameter_inches * 25.4
-        Steel_diameter_mm = Steel_diameter_inches * 25.4
-        Al_radius_mm = Al_diameter_mm / 2
-        Steel_radius_mm = Steel_diameter_mm/2
-        Al_CSA_mm2 = math.pi * (Al_radius_mm ** 2)
-        Steel_CSA_mm2 = math.pi * (Steel_radius_mm ** 2)
-        Al_SCSA_mm2 = 12.93 *(Al_diameter_mm**2)
-        Steel_SCSA_mm2 = 6.156 *(Steel_diameter_mm**2)
-        total_suggested_csa_mm2 = Al_SCSA_mm2+Steel_SCSA_mm2
-        Al_percentage = (Al_SCSA_mm2 / total_suggested_csa_mm2) * 100
-        Steel_percentage = (Steel_SCSA_mm2/total_suggested_csa_mm2) * 100
-        Al_cost=(Cost*Al_percentage)/100
-        Steel_cost=(Cost*Steel_percentage)/100
-        # Display calculated values
-        st.write("## Calculated Values")
-        st.write(f"Aluminium Diameter (mm): {Al_diameter_mm:.2f}")
-        st.write(f"Steel Diameter (mm): {Steel_diameter_mm:.2f}")
-        st.write(f"Aluminium Radius (mm): {Al_radius_mm:.2f}")
-        st.write(f"Steel Radius (mm): {Steel_radius_mm:.2f}")
-        st.write(f"Aluminium Cross Sectional Area (mm²): {Al_CSA_mm2:.2f}")
-        st.write(f"Steel Cross Sectional Area (mm²): {Steel_CSA_mm2:.2f}")
-        st.write(f"Aluminium Suggested CSA (mm²): {Al_SCSA_mm2:.2f}")
-        st.write(f"Steel Suggested CSA (mm²): {Steel_SCSA_mm2:.2f}")
-        st.write(f"Total Suggested CSA (mm²): {total_suggested_csa_mm2:.2f}")
-        st.write(f"Aluminium Percentage: {Al_percentage:.2f}%")
-        st.write(f"Steel Percentage: {Steel_percentage:.2f}%")
-        st.write(f"Aluminium Cost: Rs.{Al_cost:.2f}")
-        st.write(f"Steel Cost: Rs.{Steel_cost:.2f}")
+        with st.sidebar:
+            # st.sidebar.image("data/Kuber_logo.jpeg",caption="")
+            selected=option_menu(
+                menu_title="Calculators",
+                options=["Size/Cost Calculator Inches","Size/Cost Calculator MM","SWG To Diameter and Area","Diameter to SWG","Number of Layers","Rod Cost"],
+                icons=["calculator","calculator","calculator","calculator","calculator","calculator"],
+                menu_icon="cast",
+                default_index=0
+            )
+        if selected=="Size/Cost Calculator Inches":
+            #st.subheader(f"Page: {selected}")
+            SizeCalculatorinches()
+            # graphs()
+        elif selected=="Size/Cost Calculator MM":
+            #st.subheader(f"Page: {selected}")
+            SizeCalculatorMM()
+            # graphs()
+        elif selected=="SWG To Diameter and Area":
+            SWG_to_DA()
+        elif selected=="Diameter to SWG":
+            Dia_to_SWG()
+        elif selected=="Number of Layers":
+            layers()
+        elif selected=="Rod Cost":
+            RodCost()
 
         # st.sidebar.image("data/Kuber_logo.jpeg",caption="")
     def reports():
