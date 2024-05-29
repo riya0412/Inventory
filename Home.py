@@ -59,13 +59,13 @@ elif st.session_state["authentication_status"]:
     # result = view_all_data()
     # df=pd.DataFrame(result,columns=["Policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","id"])
 
-    # conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
-    # c=conn.cursor()
-    # query="select * from client_list"
-    # c.execute(query)
-    # data=c.fetchall()
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+    c=conn.cursor()
+    query="select * from client_list"
+    c.execute(query)
+    data=c.fetchall()
 
-    # df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","TimeGuaranteeforCredit","LastCreditCycle","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","ManufacturedRates","POCName","POCContactInfo","LastTradedValuesWithProducts","LastMeeting","AddressWork"])
+    df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","TimeGuaranteeforCredit","LastCreditCycle","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","ManufacturedRates","POCName","POCContactInfo","LastTradedValuesWithProducts","LastMeeting","AddressWork"])
     
     #load excel file | comment this line when  you fetch data from mysql
     # Inventry=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Inventory')
@@ -79,7 +79,7 @@ elif st.session_state["authentication_status"]:
         # st.sidebar.image("data/Kuber_logo.jpeg",caption="")
         Inventry=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Inventory')
         nested_products=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Nested Products')
-        conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
         query5="select * from order_status"
         c.execute(query5)
