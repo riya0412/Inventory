@@ -7,7 +7,7 @@ def machine_form():
     theme_plotly = None
     with open('style.css')as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
-    conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query="select * from machine_list"
     c.execute(query)
@@ -45,7 +45,7 @@ def machine_form():
                 c.execute(query2,data)
                 conn.commit()
                 print(data)
-    conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query5="select * from machine_list"
     c.execute(query5)

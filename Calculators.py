@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import mysql.connector
 
+
+
 def SizeCalculatorinches():
     # Title of the app
     st.title("Conductor Cost Calculator")
@@ -54,7 +56,7 @@ def SizeCalculatorinches():
     st.header("Results")
 
     results = {
-        "Parameter": ["Diameter (inches)", "Diameter (mm)", "Radius (mm)", "Cross Sectional Area", "CSA (suggested)", "Percentage", "Cost (in ₹)","Supply Cost (in ₹)","Manufacturing Cost (in ₹)"],
+        "Parameter": ["Diameter (inches)", "Diameter (mm)", "Radius (mm)", "Cross Sectional Area(mm)", "CSA (suggested)(mm)", "Percentage", "Cost (in ₹)","Supply Cost (in ₹)","Manufacturing Cost (in ₹)"],
         "Aluminium": [diam_aluminium_inches, diam_aluminium_mm, radius_aluminium_mm, csa_aluminium, suggested_csa_aluminium, percentage_aluminium, cost_aluminium, supplycost_al,Manf_al],
         "Steel": [diam_steel_inches, diam_steel_mm, radius_steel_mm, csa_steel, suggested_csa_steel, percentage_steel, cost_steel, supplycost_steel,Manf_steel]
     }
@@ -62,9 +64,10 @@ def SizeCalculatorinches():
     results_df = pd.DataFrame(results)
 
     st.table(results_df)
-
+    total_supply_cost=supplycost_al+supplycost_steel
+    total_manufacturing_cost=Manf_al+Manf_steel
     total_suggested_csa_result = pd.DataFrame({
-        "Total Suggested CSA": [total_suggested_csa],
+        "Total Suggested CSA(mm)": [total_suggested_csa],
         "Total Cost (in ₹)": [cost_aluminium + cost_steel],
         "Total Suuply Cost (in ₹) Atleast": [supplycost_al+supplycost_steel],
         "Total Manufacturing Cost (in ₹) Atleast": [Manf_al+Manf_steel],
@@ -73,11 +76,11 @@ def SizeCalculatorinches():
 
     st.table(total_suggested_csa_result)
 
-    Unloading=cost_of_conductor + 0.025* cost_of_conductor
-    Stranding = cost_of_conductor + 0.01* cost_of_conductor
-    Drawing_Welding= cost_of_conductor + 0.02* cost_of_conductor
-    Twisting=cost_of_conductor + 0.01* cost_of_conductor
-    Loading =cost_of_conductor + 0.025* cost_of_conductor
+    Unloading=0.025* cost_of_conductor
+    Stranding = 0.01* cost_of_conductor
+    Drawing_Welding= 0.02* cost_of_conductor
+    Twisting= 0.01* cost_of_conductor
+    Loading = 0.025* cost_of_conductor
     Description = {
         "Parameter": ["Supply Costs (in ₹)","Manufacturing Costs (in ₹)"],
         "Unloading Cost (in ₹)": [Unloading,Unloading],
@@ -100,8 +103,8 @@ def SizeCalculatorMM():
     st.header("Input Parameters")
 
     cost_of_conductor = st.number_input("Cost of Conductor (in ₹)", value=1000)
-    diam_aluminium_mm = st.number_input("Diameter of Aluminium (mm)", value=0.000)
-    diam_steel_mm = st.number_input("Diameter of Steel (mm)", value=0.000)
+    diam_aluminium_mm = st.number_input("Diameter of Aluminium (mm)", value=0.750)
+    diam_steel_mm = st.number_input("Diameter of Steel (mm)", value=0.420)
     
     # Calculations
     def mm_to_inches(mm):
@@ -142,7 +145,7 @@ def SizeCalculatorMM():
     st.header("Results")
 
     results = {
-        "Parameter": [ "Diameter (mm)","Diameter (inches)", "Radius (mm)", "Cross Sectional Area", "CSA (suggested)", "Percentage", "Cost (in ₹)","Supply Cost (in ₹)","Manufacturing Cost (in ₹)"],
+        "Parameter": [ "Diameter (mm)","Diameter (inches)", "Radius (mm)", "Cross Sectional Area(mm)", "CSA (suggested)(mm)", "Percentage", "Cost (in ₹)","Supply Cost (in ₹)","Manufacturing Cost (in ₹)"],
         "Aluminium": [ diam_aluminium_mm,diam_aluminium_inches, radius_aluminium_mm, csa_aluminium, suggested_csa_aluminium, percentage_aluminium, cost_aluminium, supplycost_al,Manf_al],
         "Steel": [ diam_steel_mm,diam_steel_inches, radius_steel_mm, csa_steel, suggested_csa_steel, percentage_steel, cost_steel, supplycost_steel,Manf_steel]
     }
@@ -152,7 +155,7 @@ def SizeCalculatorMM():
     st.table(results_df)
 
     total_suggested_csa_result = pd.DataFrame({
-        "Total Suggested CSA": [total_suggested_csa],
+        "Total Suggested CSA(mm)": [total_suggested_csa],
         "Total Cost (in ₹)": [cost_aluminium + cost_steel],
         "Total Suuply Cost (in ₹) Atleast": [supplycost_al+supplycost_steel],
         "Total Manufacturing Cost (in ₹) Atleast": [Manf_al+Manf_steel],
@@ -161,11 +164,11 @@ def SizeCalculatorMM():
     
     st.table(total_suggested_csa_result)
 
-    Unloading=cost_of_conductor + 0.025* cost_of_conductor
-    Stranding = cost_of_conductor + 0.01* cost_of_conductor
-    Drawing_Welding= cost_of_conductor + 0.02* cost_of_conductor
-    Twisting=cost_of_conductor + 0.01* cost_of_conductor
-    Loading =cost_of_conductor + 0.025* cost_of_conductor
+    Unloading=0.025* cost_of_conductor
+    Stranding = 0.01* cost_of_conductor
+    Drawing_Welding= 0.02* cost_of_conductor
+    Twisting= 0.01* cost_of_conductor
+    Loading = 0.025* cost_of_conductor
     Description = {
         "Parameter": ["Supply Costs (in ₹)","Manufacturing Costs (in ₹)"],
         "Unloading Cost (in ₹)": [Unloading,Unloading],
@@ -186,7 +189,7 @@ def SWG_to_DA():
     st.header("Input Parameter")
 
     SWG = st.number_input("Enter the SWG Gauge Value", value=0)
-    conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber_Inventory')
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query=f"SELECT Diameter_inches FROM SWG WHERE SWG = %s"
     c.execute(query,(SWG,))
@@ -210,7 +213,7 @@ def SWG_to_DA():
 def Dia_to_SWG():
     st.title("Diameter To SWG Calculator")
     def get_closest_swg(diameter):
-        conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber_Inventory')
+        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
         c.execute("SELECT SWG, Diameter_inches FROM SWG")
         swg_data = c.fetchall()
@@ -295,3 +298,4 @@ def RodCost():
     results_df = pd.DataFrame(results)
 
     st.table(results_df)
+

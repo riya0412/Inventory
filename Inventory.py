@@ -15,7 +15,7 @@ def conversion_module():
 
     # Function to calculate cost price of ACSR conductor
     def calculate_cost_price(machine_utility,time,labours, labor_rate, acsr_weight):
-        conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
         query="select * from orders"
         c.execute(query)
@@ -42,7 +42,7 @@ def conversion_module():
     # steel_cost = st.number_input("Enter Cost of Steel (per kg):", min_value=0.0, step=0.01)
     time_perKG=0.5
     machine_utility_perhour = 100
-    conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber_Inventory')
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query="select * from labour"
     c.execute(query)
@@ -52,7 +52,7 @@ def conversion_module():
     if st.button("Calculate"):
         acsr_weight = calculate_acsr_weight(aluminum_weight, steel_weight)
         total_cost = calculate_cost_price( machine_utility_perhour,time_perKG,Labours, labour_rate, acsr_weight)
-        conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
         query="select * from Inventry_Module"
         c.execute(query)
