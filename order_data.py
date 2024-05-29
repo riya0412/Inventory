@@ -96,8 +96,8 @@ def order_data():
                         conn.commit()
                         last_order_id = c.lastrowid
                         Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                        query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
-                        c.execute(query3,(last_order_id,Expected_Delivery_Date))
+                        query3="insert into orders_tracking(Order_id,Product,Expected_Delivery_Date) values(%s,%s,%s)"
+                        c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                         conn.commit()
                         print(data)
                 else:
@@ -106,8 +106,8 @@ def order_data():
                     conn.commit()
                     last_order_id = c.lastrowid
                     Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                    query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
-                    c.execute(query3,(last_order_id,Expected_Delivery_Date))
+                    query3="insert into orders_tracking(Order_id,Product,Expected_Delivery_Date) values(%s,%s,%s)"
+                    c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                     conn.commit()
                     print(data)
     conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
@@ -198,7 +198,7 @@ def order_status(name):
     query4="select * from orders_tracking"
     c.execute(query4)
     data=c.fetchall()
-    df=pd.DataFrame(data,columns=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+    df=pd.DataFrame(data,columns=["Order_id","Product","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
     OrderStatus=st.sidebar.multiselect(
             "SELECT Status",
             options=df["Status"].unique(),
