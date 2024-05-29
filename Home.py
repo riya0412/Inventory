@@ -81,7 +81,7 @@ elif st.session_state["authentication_status"]:
         nested_products=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Nested Products')
         conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
-        query5="select * from order_status"
+        query5="select * from orders_tracking"
         c.execute(query5)
         data1=c.fetchall()
         orders=pd.DataFrame(data1, columns=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
