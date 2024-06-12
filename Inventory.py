@@ -62,7 +62,7 @@ def conversion_module():
         st.write("Total Production Cost:", total_cost)
         new_quantity_al=float(df[df["Product_Name"]=="Aluminium Rod"]["Quantity"].values)-float(aluminum_weight)
         new_quantity_steel=float(df[df["Product_Name"]=="Steel Rod"]["Quantity"].values)-float(steel_weight)        
-        conn=mysql.connector.connect(host='localhost',port="3306",user='root',passwd='Pars@0412',db='Kuber')
+        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
         c=conn.cursor()
         query="update Inventry_Module set Quantity = %s, Unit= %s where Product_Name=%s"
         c.execute(query,(acsr_weight,"Kg",Product_Name))
