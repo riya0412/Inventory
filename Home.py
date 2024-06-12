@@ -84,7 +84,7 @@ elif st.session_state["authentication_status"]:
         query5="select * from orders_tracking"
         c.execute(query5)
         data1=c.fetchall()
-        orders=pd.DataFrame(data1, columns=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+        orders=pd.DataFrame(data1, columns=["Order_id","Product_Name","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
 
         #switcher
         ProductGrade=st.sidebar.multiselect(
