@@ -20,7 +20,7 @@ def conversion_module():
         query="select * from orders"
         c.execute(query)
         data=c.fetchall()
-        order_df=pd.DataFrame(data,columns=["Order_Id","Product_Name","Product_type,"Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
+        order_df=pd.DataFrame(data,columns=["Order_Id","Product_Name","Product_type","Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
         aluminum_cost  = order_df[(order_df['Type_of_order'] == 'From') & (order_df['Product_Name']=='Aluminium Rod') ]['Amount'].sum()
         steel_cost  = order_df[(order_df['Type_of_order'] == 'From') & (order_df['Product_Name']=='Steel Rod') ]['Amount'].sum()
         acsr_cost = (float(aluminum_cost) * float(aluminum_weight)) + (float(steel_cost) * float(steel_weight))
