@@ -32,12 +32,24 @@ def conversion_module():
 
     # Streamlit UI components
     st.title("Conductor Production Cost Calculator")
-    Product=["ACSR","AAC","Wire","Insulator","Structural Components","AAAC","Aerial Bunched Cable","Aluminium Scrap"]
+    Product=["ACSR","AAC","AAAC","Aerial Bunched Cable"]
     Product_Name=st.selectbox(label="Product Name",options=Product)
-    Product_Type=st.text_input(label="Product Type")
-    aluminum_weight = st.number_input("Enter Weight of Aluminum (in kg):", min_value=0.0, step=0.01)
-    steel_weight = st.number_input("Enter Weight of Steel Wire (in kg):", min_value=0.0, step=0.01)
-    Labours=st.number_input("Number of Labours")
+    if Product_Name=="ACSR":
+        Products=["Mole","Squirrel","Weasel","Rabbit","Raccoon"]
+        Product_Type=st.selectbox(label="Product Type",options=Products)
+    elif Product_Name=="AAC":
+        Products=["Wolf","Panther","Zebra","Moose","Gopher","Fox","Ferret"]
+        Product_Type=st.selectbox(label="Product Type",options=Products)
+    elif Product_Name=="AAAC":
+        Products=["Mink","Beaver","Otter","Cat"]
+        Product_Type=st.selectbox(label="Product Type",options=Products)
+    elif Product_Name=="Aerial Bunched Cable":
+        Products=["Tiger","Lion","Goat","Deer"]
+        Product_Type=st.selectbox(label="Product Type",options=Products)
+    
+    aluminum_weight = st.number_input("Enter Weight of Aluminum (in kg):", min_value=0)
+    steel_weight = st.number_input("Enter Weight of Steel Wire (in kg):", min_value=0)
+    Labours=st.number_input("Number of Labours",min_value=1)
     # aluminum_cost = st.number_input("Enter Cost of Aluminum (per kg):", min_value=0.0, step=0.01)
     # steel_cost = st.number_input("Enter Cost of Steel (per kg):", min_value=0.0, step=0.01)
     time_perKG=0.5
