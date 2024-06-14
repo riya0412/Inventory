@@ -15,24 +15,24 @@ def order_data():
     
 
     order_df=pd.DataFrame(data,columns=["Order_Id","Product_Name","Product_Type","Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
-    ProductName=st.sidebar.multiselect(
-            "SELECT PRODUCT Name",
-            options=order_df["Product_Name"].unique(),
-            default=order_df["Product_Name"].unique(),
-            )
-    ProductType=st.sidebar.multiselect(
-            "SELECT PRODUCT Type",
-            options=order_df["Product_Type"].unique(),
-            default=order_df["Product_Type"].unique(),
-            )
-    OrderStatus=st.sidebar.multiselect(
-            "SELECT Status",
-            options=order_df["Status"].unique(),
-            default=order_df["Status"].unique(),
-            )
-    df_selection=order_df.query(
-        "Product_Name==@ProductName & Product_Type==@ProductType & Status==@OrderStatus"
-        )
+    # ProductName=st.sidebar.multiselect(
+    #         "SELECT PRODUCT Name",
+    #         options=order_df["Product_Name"].unique(),
+    #         default=order_df["Product_Name"].unique(),
+    #         )
+    # ProductType=st.sidebar.multiselect(
+    #         "SELECT PRODUCT Type",
+    #         options=order_df["Product_Type"].unique(),
+    #         default=order_df["Product_Type"].unique(),
+    #         )
+    # OrderStatus=st.sidebar.multiselect(
+    #         "SELECT Status",
+    #         options=order_df["Status"].unique(),
+    #         default=order_df["Status"].unique(),
+    #         )
+    # df_selection=order_df.query(
+    #     "Product_Name==@ProductName & Product_Type==@ProductType & Status==@OrderStatus"
+    #     )
     option1=["From","To"]
     option2=["Kg","Km"]
     Labour=["Labour1","Labour2","Labour3","Labour4","Labour5","Labour6","Others"]
@@ -189,6 +189,25 @@ def order_data():
     query5="select * from orders"
     c.execute(query5)
     data=c.fetchall()
+    order_df=pd.DataFrame(data,columns=["Order_Id","Product_Name","Product_Type","Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
+    ProductName=st.sidebar.multiselect(
+            "SELECT PRODUCT Name",
+            options=order_df["Product_Name"].unique(),
+            default=order_df["Product_Name"].unique(),
+            )
+    ProductType=st.sidebar.multiselect(
+            "SELECT PRODUCT Type",
+            options=order_df["Product_Type"].unique(),
+            default=order_df["Product_Type"].unique(),
+            )
+    OrderStatus=st.sidebar.multiselect(
+            "SELECT Status",
+            options=order_df["Status"].unique(),
+            default=order_df["Status"].unique(),
+            )
+    df_selection=order_df.query(
+        "Product_Name==@ProductName & Product_Type==@ProductType & Status==@OrderStatus"
+        )
     showData=st.multiselect('Filter: ',df_selection.columns,default=["Order_Id","Product_Name","Product_Type","Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
     st.dataframe(df_selection[showData],use_container_width=True)
     # df=pd.DataFrame(data,columns=["Order_id","Product_Name","Type_of_order","Dealer_Name","Quantity","Unit","Rate","Amount","Labour_Associated","POC_Name","POC_Number","Date_of_order","Expected_Delivery_Date","Status"])
@@ -202,7 +221,7 @@ def order_data():
     Sold_Rate=df_selection[df_selection['Type_of_order'] == 'To']['Rate'].sum()
     profit_per_unit = Sold_Rate - Purchased_Rate
     Overall_profit=(Sold_Quantity*Sold_Rate)-(Sold_Quantity*Purchased_Rate)
-
+    
     total0,total1,total2,total3,total4=st.columns(5,gap='small')
     with total0:
         st.info("Total Orders",icon="💰")
