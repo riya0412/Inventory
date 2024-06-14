@@ -38,78 +38,152 @@ def order_data():
     Labour=["Labour1","Labour2","Labour3","Labour4","Labour5","Labour6","Others"]
 
     # form
-    with st.form(key="Order_form"):
-        Name=st.text_input(label="Product Name*")
-        Type=st.text_input(label="Product Type*")
-        Address=st.selectbox(label="Type of order (TO/FROM)*",options=option1)
-        Person=st.text_input(label="Name of the client/vender*")
-        Quantity=st.text_input(label="Quantity(Kg/Km)*")
-        Unit=st.selectbox(label="Kg/Km*",options=option2)
-        Rate=st.text_input(label="Rate*")
-        Labour_Associated=st.multiselect("Labours Associated",options=Labour)
-        if Labour_Associated == 'Others':
-            new_Labour = st.text_input('Enter New Labour')
-            if new_Labour:
-                Labour_Associated = new_Labour
-                Labour.append(new_Labour)
-        POC_Name=st.text_input(label="Name of POC")
-        POC_Number=st.text_input(label="Number of POC")
-        Date=st.date_input(label="Order Date*")
-        Delivery_Date=st.date_input(label="Expected Delivery Date*")
-        st.markdown("**required*")
+    Product=["AAC","ACSR","Wire","Insulator","Structural Components","AAAC","Aerial Bunched Cable","Aluminium Scrap"]
+    Name=st.selectbox(label="Product Name*",options=Product)
+    if Name=="ACSR":
+        Products=["Mole","Squirrel","Weasel","Rabbit","Raccoon"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="AAC":
+        Products=["Wolf","Panther","Zebra","Moose","Gopher","Fox","Ferret"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="AAAC":
+        Products=["Mink","Beaver","Otter","Cat"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="Aerial Bunched Cable":
+        Products=["Tiger","Lion","Goat","Deer"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="Wire":
+        Products=["Stay Wires","Earthing wire","Aluminium wire","Steel wire"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="Insulator":
+        Products=["Polymer Insulator","Porcelain insulator","Glass Insulator"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="Structural Components":
+        Products=["Jumper Cable","Earthing rod","Stay elbow","Stay Rod"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    elif Name=="Aluminium Scrap":
+        Products=["Aluminium Scrap"]
+        Type=st.selectbox(label="Product Type",options=Products)
+    Address=st.selectbox(label="Type of order (TO/FROM)*",options=option1)
+    Party=["MARUTI ENTERPRISES","SHREE SHYAM ENTERPRISES",
+"NAMAN INTERNATIONALv/ RYAN",
+"D&M CABLES",
+"KRISHNA ENTERPRISES",
+"PMHSR TRANSFORMERS & CONDUCTORS PVT. LTD.",
+"POWER SAHAJ",
+"NARMADA METAL",
+"ELECON CONDUCTORS LTD.",
+"JAIPURIA BROTHERS ELECTRICALS PVT. LTD.",
+"LAXMI WIRE INDUSTRIES",
+"SHANTAVEER ELECTRICAL ENGG. CO.",
+"SRI PADMAWATI METALS",
+"GUPTA IMPEX",
+"REKHA INDUSTRIES",
+"JM CABLE AND CONDUCTORS",
+"RASS HEAVY ELECTRICALS PVT LTD",
+"ANGOORI METALS"
+"LAXMI WIRE INDUSTRIES",
+"RKS STEEL INDUSTRIES PVT LTD",
+"TAPODHANI METALS AND ALLOYS",
+"SHREE PUSHKAR WIRES",
+"KAMYA ENTERPRISES PVT. LTD.",
+"MAHAVIR TRANSMISSION LIMITED",
+"JAIPURIA BROTHERS ELECTRICALS PVT. LTD.",
+"SAN ELECTRICALS",
+"DEEPAK TRADING COMPANY",
+"SRI PADMAWATI METALS",
+"SAKAMBHARI ENTERPRISES",
+"SHREE NATH METAL WORKS",
+"JAI AMBAY ELECTRICALS",
+"NARMADA INFRATECH AND VIDHYUT PRODUCTS PVT. LTD.",
+"TECHNO FIBRE INDUSTRIES",
+"MAAN ALUMINIUM LTD.",
+"ARHAM INDUSTRIES",
+"SUMRIDHI ALUMINIUM PVT. LTD.",
+"A.S WIRE INDUSTRIES",
+"SR ENTERPRISES",
+"PUSHPANJALI ENTERPRISES PVT LTD",
+"RAJ ENTERPRISES",
+"PRAGATI ENTERPRISES",
+"MAHESHWARI ELECTRICALS",
+"GLOBAL METAL TECH"
+"R.L. JAIN & SONS",
+"STAR BANGLES",
+"G.S TRADING COMPANY",
+"JAIPURIA BROTHERS",
+"BHALLA ENGINEERS",
+"RAKMAN INDUSTRIES LTD",
+"PARMESHWAR WIRE PRODUCTS",
+"RISHAB POWER CONTROLS"
+,"INDIAN QUALIY PRODUCRTS CO","MANSA TRADING CO"]
+    Person=st.selectbox(label="Name of the client/vender*",options=Party)
+    Quantity=st.text_input(label="Quantity(Kg/Km)*")
+    Unit=st.selectbox(label="Kg/Km*",options=option2)
+    Rate=st.text_input(label="Rate*")
+    Labour_Associated=st.multiselect("Labours Associated",options=Labour)
+    if Labour_Associated == 'Others':
+        new_Labour = st.text_input('Enter New Labour')
+        if new_Labour:
+            Labour_Associated = new_Labour
+            Labour.append(new_Labour)
+    POC_Name=st.text_input(label="Name of POC")
+    POC_Number=st.text_input(label="Number of POC")
+    Date=st.date_input(label="Order Date*")
+    Delivery_Date=st.date_input(label="Expected Delivery Date*")
+    st.markdown("**required*")
 
-        submit_button=st.form_submit_button(label="Submit")
+        # submit_button=st.form_submit_button(label="Submit")
 
-        if submit_button:
-            if not Address or not Name or not Type or not Person or not Quantity or not Date or not Unit or not Rate or not Labour_Associated or not Delivery_Date:
-                st.warning("Ensure all mandatory fields are filled.")
-                st.stop()
-            else:
-                # new_data= pd.DataFrame(
-                #     [
-                #         {
-                #             "Type_of_order": Address,
-                #             "Person": Person,
-                #             "Quantity":Quantity,
-                #             "Unit":Unit,
-                #             "Rate":Rate,
-                #             "Labour_Associated":", ".join(Labour_Associated),
-                #             "POC_Name":POC_Name,
-                #             "POC_Number":POC_Number,
-                #             "Date_of_order":Date.strftime("%d/%m/%Y"),
-                #         }
-                #     ]
-                # )
-                formatted_quantity = "%.2f" % float(Quantity)
-                formatted_rate = "%.2f" % float(Rate)
-                amount=float(Quantity)*float(Rate)
-                formatted_amount="%.2f" % float(amount)
-                data=(Name,Type,Address,Person,formatted_quantity,Unit,formatted_rate,formatted_amount,", ".join(Labour_Associated),POC_Name,POC_Number,Date.strftime("%Y-%m-%d"),Delivery_Date.strftime("%Y-%m-%d"))
-                if Address=="To":
-                    present_quantity=order_df[order_df["Product_Name"]==Name]["Quantity"].sum()
-                    if (float(present_quantity)<float(formatted_quantity)):
-                        st.warning("Entered Quantity is more then the presen quantity")
-                        # st.stop()
-                    else:
-                        query2="insert into orders(Product_Name,Product_Type,Type_of_order,Dealer_Name,Quantity,Unit,Rate,Amount,Labour_Associated,POC_Name,POC_Number,Order_Date,Expected_delivery_date) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        c.execute(query2,data)
-                        conn.commit()
-                        last_order_id = c.lastrowid
-                        Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                        query3="insert into orders_tracking(Order_id,Product_Name,Expected_Delivery_Date) values(%s,%s,%s)"
-                        c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
-                        conn.commit()
-                        print(data)
+    if st.button("Submit"):
+        if not Address or not Name or not Type or not Person or not Quantity or not Date or not Unit or not Rate or not Labour_Associated or not Delivery_Date:
+            st.warning("Ensure all mandatory fields are filled.")
+            st.stop()
+        else:
+            # new_data= pd.DataFrame(
+            #     [
+            #         {
+            #             "Type_of_order": Address,
+            #             "Person": Person,
+            #             "Quantity":Quantity,
+            #             "Unit":Unit,
+            #             "Rate":Rate,
+            #             "Labour_Associated":", ".join(Labour_Associated),
+            #             "POC_Name":POC_Name,
+            #             "POC_Number":POC_Number,
+            #             "Date_of_order":Date.strftime("%d/%m/%Y"),
+            #         }
+            #     ]
+            # )
+            formatted_quantity = "%.2f" % float(Quantity)
+            formatted_rate = "%.2f" % float(Rate)
+            amount=float(Quantity)*float(Rate)
+            formatted_amount="%.2f" % float(amount)
+            data=(Name,Type,Address,Person,formatted_quantity,Unit,formatted_rate,formatted_amount,", ".join(Labour_Associated),POC_Name,POC_Number,Date.strftime("%Y-%m-%d"),Delivery_Date.strftime("%Y-%m-%d"))
+            if Address=="To":
+                present_quantity=order_df[order_df["Product_Name"]==Name]["Quantity"].sum()
+                if (float(present_quantity)<float(formatted_quantity)):
+                    st.warning("Entered Quantity is more then the presen quantity")
+                    # st.stop()
                 else:
                     query2="insert into orders(Product_Name,Product_Type,Type_of_order,Dealer_Name,Quantity,Unit,Rate,Amount,Labour_Associated,POC_Name,POC_Number,Order_Date,Expected_delivery_date) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                     c.execute(query2,data)
                     conn.commit()
                     last_order_id = c.lastrowid
                     Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                    query3="insert into orders_tracking(Order_id,Product_Name,Expected_Delivery_Date) values(%s,%s,%s)"
-                    c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
+                    query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
+                    c.execute(query3,(last_order_id,Expected_Delivery_Date))
                     conn.commit()
                     print(data)
+            else:
+                query2="insert into orders(Product_Name,Product_Type,Type_of_order,Dealer_Name,Quantity,Unit,Rate,Amount,Labour_Associated,POC_Name,POC_Number,Order_Date,Expected_delivery_date) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                c.execute(query2,data)
+                conn.commit()
+                last_order_id = c.lastrowid
+                Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
+                query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
+                c.execute(query3,(last_order_id,Expected_Delivery_Date))
+                conn.commit()
+                print(data)
     conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query5="select * from orders"
