@@ -170,8 +170,8 @@ def order_data():
                     conn.commit()
                     last_order_id = c.lastrowid
                     Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                    query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
-                    c.execute(query3,(last_order_id,Expected_Delivery_Date))
+                    query3="insert into orders_tracking(Order_id,Product_Name,Expected_Delivery_Date) values(%s,%s,%s)"
+                    c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                     conn.commit()
                     print(data)
             else:
@@ -180,8 +180,8 @@ def order_data():
                 conn.commit()
                 last_order_id = c.lastrowid
                 Expected_Delivery_Date=Delivery_Date.strftime("%Y-%m-%d")
-                query3="insert into orders_tracking(Order_id,Expected_Delivery_Date) values(%s,%s)"
-                c.execute(query3,(last_order_id,Expected_Delivery_Date))
+                query3="insert into orders_tracking(Order_id,Product_Name,Expected_Delivery_Date) values(%s,%s,%s)"
+                c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                 conn.commit()
                 print(data)
     conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
@@ -232,7 +232,7 @@ def order_status(name):
         c.execute(query2,(status, order_id))
         conn.commit()
     st.header("Update Tracking")
-    order_id = st.number_input("Enter Order ID:")
+    order_id = st.number_input("Enter Order ID:",min_value=1)
     Name=name
     loaded = st.checkbox("Loaded by sender")
     out_for_delivery = st.checkbox("Out for delivery")
