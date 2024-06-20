@@ -253,16 +253,17 @@ def order_status(name):
     st.header("Update Tracking")
     order_id = st.number_input("Enter Order ID:",min_value=1)
     Name=name
-    loaded = st.checkbox("Loaded by sender")
-    out_for_delivery = st.checkbox("Out for delivery")
-    delivered = st.checkbox("Delivered")
+    # loaded = st.checkbox("Loaded by sender")
+    # out_for_delivery = st.checkbox("Out for delivery")
+    # delivered = st.checkbox("Delivered")
+    status=st.radio("Status",options=["Loaded by sender","Out for delivery","Delivered"])
 
     if st.button("Update Order Status"):
-        if loaded:
+        if status=="Loaded by sender":
             update_order_status(order_id,Name, "Loaded")
-        elif out_for_delivery:
+        elif status=="Out for delivery":
             update_order_status(order_id,Name, "Out for delivery")
-        elif delivered:
+        elif status=="Delivered":
             update_order_status(order_id,Name, "Delivered")
             conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
             c=conn.cursor()
