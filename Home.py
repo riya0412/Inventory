@@ -203,6 +203,103 @@ elif st.session_state["authentication_status"]:
         # Display the embedded Power BI report using st.write
         st.write(power_bi_embed_code, unsafe_allow_html=True)
         # st.components.v1.iframe(power_bi_embed_code, width=800, height=500)
+        def update_data(excel_path, df, changes):
+            '''Updates the inventory data in the Excel sheet.'''
+            
+            if changes['edited_rows']:
+                deltas = changes['edited_rows']
+                for i, delta in deltas.items():
+                    df.loc[i, list(delta.keys())] = list(delta.values())
+            
+            if changes['added_rows']:
+                new_rows = pd.DataFrame(changes['added_rows'])
+                df = pd.concat([df, new_rows], ignore_index=True)
+            
+            if changes['deleted_rows']:
+                df = df.drop(changes['deleted_rows'])
+            
+            # Reset index if needed
+            df = df.reset_index(drop=True)
+            
+            # Save the updated dataframe back to Excel
+            df.to_excel(excel_path, index=False)
+            
+            return df
+        Inventory=pd.read_excel('Inventory.xlsx')
+        nested_products=pd.read_excel('Nested_Products.xlsx')
+        edited_df = st.data_editor(
+            Inventory,
+            disabled=['S.No.'], # Don't allow editing the 'id' column.
+            num_rows='dynamic', # Allow appending/deleting rows.
+            # column_config={
+            #     # Show dollar sign before price columns.
+            #     "price": st.column_config.NumberColumn(format="$%.2f"),
+            #     "cost_price": st.column_config.NumberColumn(format="$%.2f"),
+            # },
+            key='inventory_table')
+        has_uncommitted_changes1 = any(len(v) for v in st.session_state.inventory_table.values())
+        st.button(
+            'Commit changes',
+            type='primary',
+            disabled=not has_uncommitted_changes1,
+            # Update data in database
+            on_click=update_data,
+            args=("Inventory.xlsx", Inventory, st.session_state.inventory_table))
+        # edited_df = st.data_editor(
+        #     nested_products,
+        #     disabled=['S.No.'], # Don't allow editing the 'id' column.
+        #     num_rows='dynamic', # Allow appending/deleting rows.
+        #     # column_config={
+        #     #     # Show dollar sign before price columns.
+        #     #     "price": st.column_config.NumberColumn(format="$%.2f"),
+        #     #     "cost_price": st.column_config.NumberColumn(format="$%.2f"),
+        #     # },
+        #     key='nested_inventory_table')
+        # has_uncommitted_changes2 = any(len(v) for v in st.session_state.nested_inventory_table.values())
+        # st.button(
+        #     'Commit changes',
+        #     type='primary',
+        #     disabled=not has_uncommitted_changes2,
+        #     # Update data in database
+        #     on_click=update_data,
+        #     args=("Nested_Products.xlsx", nested_products, st.session_state.nested_inventory_table))
+        
+        st.subheader('Units left', divider='red')
+
+        need_to_reorder = Inventory[Inventory['Quantity(KGS/MTS)'] < Inventory['Threshold']].loc[:, 'ProductName']
+
+        if len(need_to_reorder) > 0:
+            items = '\n'.join(f'* {name}' for name in need_to_reorder)
+
+            st.error(f"We're running dangerously low on the items below:\n {items}")
+        
+        st.altair_chart(
+            # Layer 1: Bar chart.
+            alt.Chart(Inventory)
+                .mark_bar(
+                    orient='horizontal',
+                )
+                .encode(
+                    x='Quantity(KGS/MTS)',
+                    y='ProductName',
+                )
+            # Layer 2: Chart showing the reorder point.
+            + alt.Chart(Inventory)
+                .mark_point(
+                    shape='diamond',
+                    filled=True,
+                    size=50,
+                    color='salmon',
+                    opacity=1,
+                )
+                .encode(
+                    x='Threshold',
+                    y='ProductName',
+                )
+            ,
+            use_container_width=True)
+
+        st.caption('NOTE: The :diamonds: location shows the reorder point.')
         #menu bar
     def sideBar():
         with st.sidebar:
