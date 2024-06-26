@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import altair as alt
+from collections import defaultdict
 import plotly.express as px
 from streamlit_option_menu import option_menu
 from numerize.numerize import numerize
