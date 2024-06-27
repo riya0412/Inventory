@@ -109,7 +109,7 @@ elif st.session_state["authentication_status"]:
         )
         # df_selection1=nested_products.query()
         with st.expander("VIEW EXCEL DATASET"):
-            showData=st.multiselect('Filter: ',df_selection.columns,default=["S.No.","Product","ProductName","ProductGrade","Quantity(KGS/MTS)","StockCheckedon?","Stockless","Godown","Fromvendor(optional)"])
+            showData=st.multiselect('Filter: ',df_selection.columns,default=["S.No.","Product","ProductName","ProductGrade","Quantity(KGS/MTS)","StockCheckedon?","Threshold","Stockless","Godown","Fromvendor(optional)"])
             st.dataframe(df_selection[showData],use_container_width=True)
             # merged_df = pd.merge(inventory_df, nested_products_df, left_on='S.No.', right_on='inventory ID', how='inner')
         #compute top analytics
@@ -138,13 +138,7 @@ elif st.session_state["authentication_status"]:
         with total4:
             st.info('Total Pending Orders',icon="💰")
             st.metric(label="Total Pending Orders",value=f"{pending_orders:,.0f}")
-
-        # power_bi_embed_code = """<iframe title="Inventry Dashboard" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=08d20a68-0292-4f91-bb4e-e7442dfa4d7e&autoAuth=true&ctid=e97bc3a3-8b62-4fc6-a6d9-f9f3f07f3c12" frameborder="0" allowFullScreen="true"></iframe>" frameborder="0" allowFullScreen="true"></iframe>
-    # """
-
-        # Display the embedded Power BI report using st.write
-        # st.write(power_bi_embed_code, unsafe_allow_html=True)
-
+            
         left,right=st.columns(2)
         with left:
             st.subheader("Party wise Due Credit")
