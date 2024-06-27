@@ -145,28 +145,31 @@ elif st.session_state["authentication_status"]:
         # Display the embedded Power BI report using st.write
         # st.write(power_bi_embed_code, unsafe_allow_html=True)
 
-        st.subheader("Line Graph")
-        fig = px.line(df, x='PartyNumber', y='CreditDue', title='Value Over Time')
-        st.plotly_chart(fig)
-        st.subheader("Pie Chart")
-        purchase_only = df[df['PurchaseSaleBoth'] == 'Purchase']
-        sale_only = df[df['PurchaseSaleBoth'] == 'Sale']
-        both = df[df['PurchaseSaleBoth'] == 'Both']
+        left,right=st.columns(2)
+        with left:
+            st.subheader("Party wise Due Credit")
+            fig = px.line(df, x='PartyNumber', y='CreditDue', title='Value Over Time')
+            st.plotly_chart(fig,use_container_width=True)
+        with right:
+            st.subheader("Party Category")
+            purchase_only = df[df['PurchaseSaleBoth'] == 'Purchase']
+            sale_only = df[df['PurchaseSaleBoth'] == 'Sale']
+            both = df[df['PurchaseSaleBoth'] == 'Both']
 
-        # Count number of parties in each category
-        purchase_count = len(purchase_only)
-        sale_count = len(sale_only)
-        both_count = len(both)
+            # Count number of parties in each category
+            purchase_count = len(purchase_only)
+            sale_count = len(sale_only)
+            both_count = len(both)
 
-        # Create a DataFrame for plotting
-        df2 = pd.DataFrame({
-            'Category': ['Purchase Only', 'Sale Only', 'Both'],
-            'Count': [purchase_count, sale_count, both_count]
-        })
+            # Create a DataFrame for plotting
+            df2 = pd.DataFrame({
+                'Category': ['Purchase Only', 'Sale Only', 'Both'],
+                'Count': [purchase_count, sale_count, both_count]
+            })
 
-        # Plot pie chart
-        fig = px.pie(df2, values='Count', names='Category', title='Party Distribution by Purchase/Sale/Both')
-        st.plotly_chart(fig)
+            # Plot pie chart
+            fig = px.pie(df2, values='Count', names='Category', title='Party Distribution by Purchase/Sale/Both')
+            st.plotly_chart(fig,use_container_width=True)
 
     def Calculator():
         st.title("CALCULATOR")
