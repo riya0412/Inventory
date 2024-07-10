@@ -61,7 +61,7 @@ elif st.session_state["authentication_status"]:
     # result = view_all_data()
     # df=pd.DataFrame(result,columns=["Policy","Expiry","Location","State","Region","Investment","Construction","BusinessType","Earthquake","Flood","Rating","id"])
 
-    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+    conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
     query="select * from client_list"
     c.execute(query)
@@ -81,7 +81,7 @@ elif st.session_state["authentication_status"]:
         # st.sidebar.image("data/Kuber_logo.jpeg",caption="")
         Inventry=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Inventory')
         nested_products=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Nested Products')
-        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+        conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
         query5="select * from orders_tracking"
         c.execute(query5)
