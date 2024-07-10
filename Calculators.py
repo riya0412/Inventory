@@ -189,7 +189,7 @@ def SWG_to_DA():
     st.header("Input Parameter")
 
     SWG = st.number_input("Enter the SWG Gauge Value", value=0)
-    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+    conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
     query=f"SELECT Diameter_inches FROM SWG WHERE SWG = %s"
     c.execute(query,(SWG,))
@@ -213,7 +213,7 @@ def SWG_to_DA():
 def Dia_to_SWG():
     st.title("Diameter To SWG Calculator")
     def get_closest_swg(diameter):
-        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+        conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
         c.execute("SELECT SWG, Diameter_inches FROM SWG")
         swg_data = c.fetchall()
