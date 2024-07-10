@@ -15,7 +15,7 @@ def conversion_module():
 
     # Function to calculate cost price of ACSR conductor
     def calculate_cost_price(machine_utility,time,labours, labor_rate, acsr_weight):
-        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+        conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
         query="select * from orders"
         c.execute(query)
@@ -54,7 +54,7 @@ def conversion_module():
     # steel_cost = st.number_input("Enter Cost of Steel (per kg):", min_value=0.0, step=0.01)
     time_perKG=0.5
     machine_utility_perhour = 100
-    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+    conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
     query="select * from labour"
     c.execute(query)
@@ -64,7 +64,7 @@ def conversion_module():
     if st.button("Calculate"):
         acsr_weight = calculate_acsr_weight(aluminum_weight, steel_weight)
         total_cost = calculate_cost_price( machine_utility_perhour,time_perKG,Labours, labour_rate, acsr_weight)
-        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+        conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
         query="select * from Inventry_Module"
         c.execute(query)
@@ -74,7 +74,7 @@ def conversion_module():
         st.write("Total Production Cost:", total_cost)
         new_quantity_al=float(df[df["Product_Name"]=="Aluminium Rod"]["Quantity"].values)-float(aluminum_weight)
         new_quantity_steel=float(df[df["Product_Name"]=="Steel Rod"]["Quantity"].values)-float(steel_weight)        
-        conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
+        conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
         query="update Inventry_Module set Quantity = %s, Unit= %s where Product_Name=%s"
         c.execute(query,(acsr_weight,"Kg",Product_Name))
