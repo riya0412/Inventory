@@ -191,7 +191,7 @@ def SWG_to_DA():
     SWG = st.number_input("Enter the SWG Gauge Value", value=0)
     conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
-    query=f"SELECT Diameter_inches FROM SWG WHERE SWG = %s"
+    query=f"SELECT Diameter_inches FROM swg WHERE SWG = %s"
     c.execute(query,(SWG,))
     result=c.fetchone()
     Diameter=result[0]
@@ -215,7 +215,7 @@ def Dia_to_SWG():
     def get_closest_swg(diameter):
         conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
-        c.execute("SELECT SWG, Diameter_inches FROM SWG")
+        c.execute("SELECT SWG, Diameter_inches FROM swg")
         swg_data = c.fetchall()
         
         closest_swg = None
