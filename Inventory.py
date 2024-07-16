@@ -66,7 +66,7 @@ def conversion_module():
         total_cost = calculate_cost_price( machine_utility_perhour,time_perKG,Labours, labour_rate, acsr_weight)
         conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
-        query="select * from Inventry_Module"
+        query="select * from inventry_module"
         c.execute(query)
         data=c.fetchall()   
         df=pd.DataFrame(data,columns=["S_No","Product_Name","Quantity","Unit","Last_updated","By_whom"]) 
@@ -76,16 +76,16 @@ def conversion_module():
         new_quantity_steel=float(df[df["Product_Name"]=="Steel Rod"]["Quantity"].values)-float(steel_weight)        
         conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
         c=conn.cursor()
-        query="update Inventry_Module set Quantity = %s, Unit= %s where Product_Name=%s"
+        query="update inventry_module set Quantity = %s, Unit= %s where Product_Name=%s"
         c.execute(query,(acsr_weight,"Kg",Product_Name))
         conn.commit()
-        query="update Inventry_Module set Quantity = %s, Unit= %s where Product_Name=%s"
+        query="update inventry_module set Quantity = %s, Unit= %s where Product_Name=%s"
         c.execute(query,(new_quantity_al,"Kg","Aluminium Rod"))
         conn.commit()
-        query="update Inventry_Module set Quantity = %s, Unit= %s where Product_Name=%s"
+        query="update inventry_module set Quantity = %s, Unit= %s where Product_Name=%s"
         c.execute(query,(new_quantity_steel,"Kg","Steel Rod"))
         conn.commit()
-        query="select* from Inventry_Module"
+        query="select* from inventry_module"
         c.execute(query)
         data=c.fetchall()
         df=pd.DataFrame(data,columns=["S_No","Product_Name","Quantity","Unit","Last_updated","By_whom"]) 
