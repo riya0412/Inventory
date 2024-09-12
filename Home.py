@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from collections import defaultdict
 import plotly.express as px
 from streamlit_option_menu import option_menu
 from numerize.numerize import numerize
@@ -11,6 +10,7 @@ from order_data import *
 from Machinery import *
 from Inventory import *
 from Calculators import *
+from Salary import *
 from pathlib import Path
 import streamlit_authenticator as stauth
 from streamlit_extras.metric_cards import style_metric_cards
@@ -21,6 +21,7 @@ import math
 import yaml
 import yaml
 from yaml.loader import SafeLoader
+from collections import defaultdict
 
 
 st.set_page_config(page_title="Kuber Enterprises",page_icon="🌍",layout="wide")
@@ -67,7 +68,7 @@ elif st.session_state["authentication_status"]:
     c.execute(query)
     data=c.fetchall()
 
-    df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","TimeGuaranteeforCredit","LastCreditCycle","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","ManufacturedRates","POCName","POCContactInfo","LastTradedValuesWithProducts","LastMeeting","AddressWork"])
+    df=pd.DataFrame(data,columns=["id","PartyNumber","GSTIN","PartyGrade","CreditCycleDays","CreditDue","AnyGuaranteeParty","PurchaseSaleBoth","MajorProductsDealtIn","HSNCode","ManufacturedAlso","POCName","POCContactInfo","LastTradedGoodsWithPerKGRate","LastMeeting","AddressWork"])
     
     #load excel file | comment this line when  you fetch data from mysql
     # Inventry=pd.read_excel('To work on - Data Analysis.xlsx', sheet_name='Inventory')
@@ -138,7 +139,12 @@ elif st.session_state["authentication_status"]:
         with total4:
             st.info('Total Pending Orders',icon="💰")
             st.metric(label="Total Pending Orders",value=f"{pending_orders:,.0f}")
-            
+
+        # power_bi_embed_code = """<iframe title="Inventry Dashboard" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=08d20a68-0292-4f91-bb4e-e7442dfa4d7e&autoAuth=true&ctid=e97bc3a3-8b62-4fc6-a6d9-f9f3f07f3c12" frameborder="0" allowFullScreen="true"></iframe>" frameborder="0" allowFullScreen="true"></iframe>
+    # """
+
+        # Display the embedded Power BI report using st.write
+        # st.write(power_bi_embed_code, unsafe_allow_html=True)
         left,right=st.columns(2)
         with left:
             st.subheader("Party wise Due Credit")
@@ -299,13 +305,21 @@ elif st.session_state["authentication_status"]:
             use_container_width=True)
 
         st.caption('NOTE: The :diamonds: location shows the reorder point.')
+
         #menu bar
     def sideBar():
+        st.sidebar.title("Out source link")
+        calculator_button = st.sidebar.button("FORMS")
+
+        if calculator_button:
+            js = "window.open('https://kuberform.streamlit.app/')"
+            html = f"<script>{js}</script>"
+            st.components.v1.html(html)
         with st.sidebar:
             # st.sidebar.image("data/Kuber_logo.jpeg",caption="")
             selected=option_menu(
                 menu_title="Main Menu",
-                options=["Home","Inventory","Production Tracking","Orders","Reports","Calculator","Machine_Entry","Log Out"],
+                options=["Home","Inventory","Logistical Tracking","Orders","Reports","Calculator","Machine_Entry","Attendence","Log Out"],
                 icons=["house","eye","book","book","book","book","book","lock"],
                 menu_icon="cast",
                 default_index=0
@@ -320,7 +334,7 @@ elif st.session_state["authentication_status"]:
             # graphs()
         elif selected=="Orders":
             order_data()
-        elif selected=="Production Tracking":
+        elif selected=="Logistical Tracking":
             order_status(person_name)
         elif selected=="Machine_Entry":
             machine_form()
@@ -328,6 +342,8 @@ elif st.session_state["authentication_status"]:
             conversion_module()
         elif selected=="Reports":
             reports()
+        elif selected=="Attendence":
+            attendance()
         elif selected=="Log Out":
             authenticator.logout()
 

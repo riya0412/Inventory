@@ -7,7 +7,7 @@ def order_data():
     theme_plotly = None
     with open('style.css')as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
-    conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
+    conn=mysql.connector.connect(host='kuber.mysql.database.azure.com',port="3306",user='kuber',passwd='Pars@0412',db='kuberinventory')
     c=conn.cursor()
     query="select * from orders"
     c.execute(query)
@@ -38,6 +38,7 @@ def order_data():
     Labour=["Labour1","Labour2","Labour3","Labour4","Labour5","Labour6","Others"]
 
     # form
+    # with st.form(key="Order_form"):
     Product=["AAC","ACSR","Wire","Insulator","Structural Components","AAAC","Aerial Bunched Cable","Aluminium Scrap"]
     Name=st.selectbox(label="Product Name*",options=Product)
     if Name=="ACSR":
@@ -221,7 +222,7 @@ def order_data():
     Sold_Rate=df_selection[df_selection['Type_of_order'] == 'To']['Rate'].sum()
     profit_per_unit = Sold_Rate - Purchased_Rate
     Overall_profit=(Sold_Quantity*Sold_Rate)-(Sold_Quantity*Purchased_Rate)
-    
+
     total0,total1,total2,total3,total4=st.columns(5,gap='small')
     with total0:
         st.info("Total Orders",icon="💰")
@@ -253,17 +254,16 @@ def order_status(name):
     st.header("Update Tracking")
     order_id = st.number_input("Enter Order ID:",min_value=1)
     Name=name
-    # loaded = st.checkbox("Loaded by sender")
-    # out_for_delivery = st.checkbox("Out for delivery")
-    # delivered = st.checkbox("Delivered")
-    status=st.radio("Status",options=["Loaded by sender","Out for delivery","Delivered"])
+    loaded = st.checkbox("Loaded by sender")
+    out_for_delivery = st.checkbox("Out for delivery")
+    delivered = st.checkbox("Delivered")
 
     if st.button("Update Order Status"):
-        if status=="Loaded by sender":
+        if loaded:
             update_order_status(order_id,Name, "Loaded")
-        elif status=="Out for delivery":
+        elif out_for_delivery:
             update_order_status(order_id,Name, "Out for delivery")
-        elif status=="Delivered":
+        elif delivered:
             update_order_status(order_id,Name, "Delivered")
             conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
             c=conn.cursor()
@@ -292,7 +292,7 @@ def order_status(name):
     query4="select * from orders_tracking"
     c.execute(query4)
     data=c.fetchall()
-    df=pd.DataFrame(data,columns=["Order_id","Product_Name","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+    df=pd.DataFrame(data,columns=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
     OrderStatus=st.sidebar.multiselect(
             "SELECT Status",
             options=df["Status"].unique(),
@@ -306,7 +306,7 @@ def order_status(name):
     df_selection=df.query(
         "Status==@OrderStatus & By_whom==@bywhom"
         )
-    showData=st.multiselect('Filter: ',df_selection.columns,default=["Order_id","Product_Name","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+    showData=st.multiselect('Filter: ',df_selection.columns,default=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
     st.dataframe(df_selection[showData],use_container_width=True)
 
 
