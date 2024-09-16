@@ -419,7 +419,7 @@ def order_status(name):
     query4="select * from orders_tracking"
     c.execute(query4)
     data=c.fetchall()
-    df=pd.DataFrame(data,columns=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+    df=pd.DataFrame(data,columns=["Order_id","Product_Name","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
     OrderStatus=st.sidebar.multiselect(
             "SELECT Status",
             options=df["Status"].unique(),
