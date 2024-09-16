@@ -433,5 +433,5 @@ def order_status(name):
     df_selection=df.query(
         "Status==@OrderStatus & By_whom==@bywhom"
         )
-    showData=st.multiselect('Filter: ',df_selection.columns,default=["Order_id","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
+    showData=st.multiselect('Filter: ',df_selection.columns,default=["Order_id","Product_Name","Expected_Delivery_Date","Status","Updation_Date","By_whom"])
     st.dataframe(df_selection[showData],use_container_width=True)
