@@ -41,7 +41,7 @@ def order_data():
     #     st.button("Create new Order")
     # with col2:
     #     st.button("Update existing order")
-    select=st.selectbox("Select",["Create New Order","Update Existing Order"])
+    select=st.selectbox("Select",["","Create New Order","Update Existing Order"])
     if select=="Create New Order":
         # form
         # with st.form(key="Order_form"):
