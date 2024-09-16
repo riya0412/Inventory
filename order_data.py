@@ -272,6 +272,14 @@ def order_data():
                     
 
                     # Concatenate labour associated details
+                    # Ensure Labour_Associated is not None before splitting
+                    if Labour_Associated is None:
+                        Labour_Associated = ""
+                    
+                    if existing_labour_associated is None:
+                        existing_labour_associated = ""
+                    
+                    # Concatenate labour associated details safely
                     new_labour = ", ".join(existing_labour_associated.split(", ") + Labour_Associated.split(", "))
 
                     # Format quantity and rate, then calculate the new amount
