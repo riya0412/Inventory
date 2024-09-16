@@ -41,7 +41,7 @@ def order_data():
     #     st.button("Create new Order")
     # with col2:
     #     st.button("Update existing order")
-    select=st.selectbox("Select",["","Create New Order","Update Existing Order"])
+    select=st.selectbox("Select",["Create New Order","Update Existing Order"])
     if select=="Create New Order":
         # form
         # with st.form(key="Order_form"):
@@ -191,7 +191,7 @@ def order_data():
                     c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                     conn.commit()
                     print(data)
-    elif select=="Update Existing Order":
+    else:
         order_id = order_df["Order_Id"]
         id = st.selectbox(label="Order Id", options=order_id)
         
@@ -265,39 +265,32 @@ def order_data():
                     # Concatenate new values with existing ones
                     new_product_name = existing_product_name + ", " + Name
                     new_product_type = existing_product_type + ", " + Type
-                    new_unit=existing_unit+Unit
+                    new_unit=existing_unit + ", "+Unit
 
                     # Update quantity by adding the new quantity to the existing one
                     
-                    
+                    print(Labour_Associated)
+                    print(existing_labour_associated)
 
                     # Concatenate labour associated details
-                    # Ensure Labour_Associated is not None before splitting
-                    # Ensure Labour_Associated is a list
-                    # if Labour_Associated is None:
-                    #     Labour_Associated = []
-                    # elif isinstance(Labour_Associated, str):
-                    #     Labour_Associated = Labour_Associated.split(", ")
-                    
-                    # # Ensure existing_labour_associated is a list
-                    # if existing_labour_associated is None:
-                    #     existing_labour_associated = []
-                    # elif isinstance(existing_labour_associated, str):
-                    #     existing_labour_associated = existing_labour_associated.split(", ")
-                    
-                    # Concatenate both lists
-                    new_labour_list = existing_labour_associated + Labour_Associated
-                    
-                    # Join the list back into a string
-                    new_labour = ", ".join(new_labour_list)
+                    if isinstance(existing_labour_associated, str):
+                        existing_labour_associated = existing_labour_associated.split(", ")
 
+                    # Labour_Associated is already a list, so no need to split
+
+                    # Concatenate both lists, remove duplicates, and preserve order
+                    new_labour_list = list(dict.fromkeys(existing_labour_associated + Labour_Associated))
+
+                    # Join the list back into a comma-separated string
+                    new_labour = ", ".join(new_labour_list)
+                    print(new_labour)
                     # Format quantity and rate, then calculate the new amount
-                    formatted_quantity = "%.2f" % new_quantity
+                    formatted_quantity = "%.2f" % float(Quantity)
                     new_quantity = float(existing_quantity) + float(formatted_quantity)
                     formatted_rate = "%.2f" % float(Rate)
                     new_rate=float(existing_rate)+float(formatted_rate)
                     amount = new_quantity * float(formatted_rate)
-                    formatted_amount = "%.2f" % amount
+                    formatted_amount = "%.2f" % float(amount)
                     new_amount=float(existing_amount)+float(formatted_amount)
 
                     # # Update your database with the concatenated values
@@ -327,8 +320,7 @@ def order_data():
                     st.success(f"Order {id} updated successfully.")
         else:
             st.error("No order found with the selected ID.")
-    else :
-        st.warning("Please select an option")
+
     conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
     query5="select * from orders"
