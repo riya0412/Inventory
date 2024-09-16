@@ -191,7 +191,7 @@ def order_data():
                     c.execute(query3,(last_order_id,Name,Expected_Delivery_Date))
                     conn.commit()
                     print(data)
-    else:
+    elif select=="Update Existing Order":
         order_id = order_df["Order_Id"]
         id = st.selectbox(label="Order Id", options=order_id)
         
@@ -310,7 +310,8 @@ def order_data():
                     st.success(f"Order {id} updated successfully.")
         else:
             st.error("No order found with the selected ID.")
-
+    else :
+        st.warning("Please select an option")
     conn=mysql.connector.connect(host='srv1021.hstgr.io',port="3306",user='u627331871_bimodel',passwd='Bimodel@1234',db='u627331871_BI')
     c=conn.cursor()
     query5="select * from orders"
