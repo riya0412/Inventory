@@ -274,16 +274,16 @@ def order_data():
                     # Concatenate labour associated details
                     # Ensure Labour_Associated is not None before splitting
                     # Ensure Labour_Associated is a list
-                    if Labour_Associated is None:
-                        Labour_Associated = []
-                    elif isinstance(Labour_Associated, str):
-                        Labour_Associated = Labour_Associated.split(", ")
+                    # if Labour_Associated is None:
+                    #     Labour_Associated = []
+                    # elif isinstance(Labour_Associated, str):
+                    #     Labour_Associated = Labour_Associated.split(", ")
                     
-                    # Ensure existing_labour_associated is a list
-                    if existing_labour_associated is None:
-                        existing_labour_associated = []
-                    elif isinstance(existing_labour_associated, str):
-                        existing_labour_associated = existing_labour_associated.split(", ")
+                    # # Ensure existing_labour_associated is a list
+                    # if existing_labour_associated is None:
+                    #     existing_labour_associated = []
+                    # elif isinstance(existing_labour_associated, str):
+                    #     existing_labour_associated = existing_labour_associated.split(", ")
                     
                     # Concatenate both lists
                     new_labour_list = existing_labour_associated + Labour_Associated
